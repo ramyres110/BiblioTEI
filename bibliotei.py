@@ -1,22 +1,6 @@
+from json import loads, dumps
 
-livros = [
-    {
-        "id": 1,
-        "titulo": "A Morte e a Morte de Quincas Berro d'Água",
-        "autor": "Jorge Amado",
-        "isbn": "1234567890",
-        "editora": "Companhia das Letras",
-        "status": "disponível"
-    },
-    {
-        "id": 2,
-        "titulo": "Grande Sertão: Veredas",
-        "autor": "João Guimarães Rosa",
-        "isbn": "1234567890",
-        "editora": "Nova Fronteira",
-        "status": "disponível"
-    }
-]
+livros = []
 
 # Cada livro deve ter um código único, título, autor, ISBN, editora e status (disponível ou emprestado).
 # Ao cadastrar um novo livro, o status deve ser automaticamente definido como "disponível"
@@ -158,7 +142,26 @@ def mostrar_relatorios():
         print("Opção de relatório inválido.")
 
 
+def ler_livros_arquivo():
+    try:
+        with open("livros.json","r") as arquivo_livros_json:
+            texto = arquivo_livros_json.read()
+            if texto:
+                livros_salvos = loads(texto)
+                livros.extend(livros_salvos)
+            arquivo_livros_json.close()
+    except:
+        return
+
+def salvar_livros_arquivo():
+    with open("livros.json","w") as arquivo_livros_json:
+        texto = dumps(livros)    
+        arquivo_livros_json.write(texto)
+        arquivo_livros_json.close()
+
 def mostrar_menu():
+    ler_livros_arquivo()
+
     print("+--------------------+")
     print("|      BiblioTEI     |")
     print("+--------------------+")
@@ -172,6 +175,7 @@ def mostrar_menu():
         opcao = input("Informe a opção: ")
         match opcao:
             case "0": 
+                salvar_livros_arquivo()
                 break
             case "1": 
                 cadastrar_livro()
