@@ -120,6 +120,44 @@ def devolver_livro():
     print("Livro {} devolvido.".format(livro["titulo"]))
 
 
+def mostrar_relatorios():
+    print("1 - Listar todos")
+    print("2 - Listar disponíveis")
+    print("3 - Listar emprestados")
+    opcao_relatorio = input("Informe o relatório: ")
+    if opcao_relatorio == "1":
+        if not livros:
+            print("Nenhum livro cadastrado.")
+            return
+        
+        print("|id \t| titulo \t| autor \t| isbn \t| editora \t| status")
+        for livro in livros:
+            print("|{} \t| {} \t| {} \t| {} \t| {} \t| {} |".format(livro["id"],livro["titulo"],livro["autor"],livro["isbn"],livro["editora"],livro["status"]))
+
+    elif opcao_relatorio == "2":
+        livros_disponiveis = [livro for livro in livros if livro["status"] == "disponível"]
+        if not livros_disponiveis:
+            print("Nenhum livro disponível.")
+            return
+        
+        print("|id \t| titulo \t| autor \t| isbn \t| editora \t| status")
+        for livro in livros_disponiveis:
+            print("|{} \t| {} \t| {} \t| {} \t| {} \t| {} |".format(livro["id"],livro["titulo"],livro["autor"],livro["isbn"],livro["editora"],livro["status"]))
+
+    elif opcao_relatorio == "3":
+        livros_emprestados = [livro for livro in livros if livro["status"] == "emprestado"]
+        if not livros_emprestados:
+            print("Nenhum livro emprestado.")
+            return
+        
+        print("|id \t| titulo \t| autor \t| isbn \t| editora \t| status \t| usuario")
+        for livro in livros_emprestados:
+            print("|{} \t| {} \t| {} \t| {} \t| {} \t| {} \t| {}".format(livro["id"],livro["titulo"],livro["autor"],livro["isbn"],livro["editora"],livro["status"],livro["usuario"]))
+
+    else:
+        print("Opção de relatório inválido.")
+
+
 def mostrar_menu():
     print("+--------------------+")
     print("|      BiblioTEI     |")
@@ -143,6 +181,8 @@ def mostrar_menu():
                 devolver_livro()
             case "4": 
                 consultar_livros()    
+            case "5": 
+                mostrar_relatorios()    
 
 
 mostrar_menu()
